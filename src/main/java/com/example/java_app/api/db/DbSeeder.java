@@ -1,5 +1,6 @@
 package com.example.java_app.api.db;
 
+
 import com.example.java_app.api.model.Person;
 
 import org.springframework.boot.CommandLineRunner;
@@ -22,9 +23,10 @@ public class DbSeeder implements CommandLineRunner {
         this.personRepository.deleteAll();
 
         // Save the welcome note
-        var person = new Person("root","root","root@gmail.com","ADMIN");
-        this.personRepository.save(person);
-
+        //var person = new Person("root","root","root@gmail.com","ROLE_ADMIN");
+        var person2 = new Person("user","user","user@gmail.com","ROLE_USER");
+       // this.personRepository.save(person);
+        this.personRepository.save(person2);
         System.out.println("Initialized database");
     }
 }

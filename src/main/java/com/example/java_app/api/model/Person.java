@@ -1,66 +1,61 @@
 package com.example.java_app.api.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 
 
 @Entity
-
+@Table(name = "Person")
 public class Person{
-    @GeneratedValue
+    
 
     @Id
-    private Long id;
-
-    private String login;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @Column(unique = true)
+    private String username;
+    @JsonProperty
     private String password;
-
     private String email;
-
-    private String role = "USER";
+    private String roles;
 
     public Person(){}
 
-    public Person(String login,String password,String email,String role)
+    public Person(String username,String password,String email,String roles)
     {
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
+        this.roles = roles;
       
     }
 
-    public Person(Long id,String login,String password,String email,String role)
+    public Person(int id,String username,String password,String email,String roles)
     {
-        this(login,password,email,role);
-        if(id!= null)
-        {
-            this.id = id;
-        }
+        this(username,password,email,roles);
     }
 
-    public Long getId() { return id;}
+    public int getId() { return id;}
 
-    public String getLogin() { return login;}
+    public String getUsername() { return username;}
 
     public String getPassword() { return password;}
 
     public String getEmail() { return email;}
 
-    public String getRole() { return role;}
+    public String getRoles() { return roles;}
 
-    public void setId(Long id)
+    public void setId(int id)
     {
         this.id = id;
     }
 
-    public void setLogin(String login)
+    public void setUsername(String login)
     {
-        this.login = login;
+        this.username = login;
     }
 
     public void setPassword(String password)
@@ -72,9 +67,9 @@ public class Person{
         this.email = email;
     }
 
-    public void setRole(String role)
+    public void setRoles(String roles)
     {
-        this.role = role;
+        this.roles = roles;
     }
- 
+    
 }
