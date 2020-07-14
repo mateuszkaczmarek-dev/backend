@@ -7,11 +7,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 
+import com.example.java_app.api.db.FirstQuestionRepository;
 //import com.example.java_app.Mapper;
 import com.example.java_app.api.db.PersonRepository;
-import com.example.java_app.api.db.QuestionRepository;
+import com.example.java_app.api.db.SecondQuestionRepository;
 import com.example.java_app.api.model.Person;
-import com.example.java_app.api.model.Questions;
+import com.example.java_app.api.model.SecondQuestions;
+import com.example.java_app.api.model.FirstQuestions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +37,14 @@ public class PersonController {
 
     
     private PersonRepository personRepository;
-    private QuestionRepository questionRepository;
+    private FirstQuestionRepository firstQuestionRepository;
+    private SecondQuestionRepository secondQuestionRepository;
     public static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
-    public PersonController(PersonRepository personRepository,QuestionRepository questionRepository) {
+    public PersonController(PersonRepository personRepository,FirstQuestionRepository firstQuestionRepository,SecondQuestionRepository secondQuestionRepository) {
         this.personRepository = personRepository;
-        this.questionRepository = questionRepository;
+        this.firstQuestionRepository = firstQuestionRepository;
+        this.secondQuestionRepository = secondQuestionRepository;
     }
 
     @RequestMapping(value = "/all" , method = RequestMethod.GET)
@@ -57,34 +61,59 @@ public class PersonController {
 
     @PostMapping
     public Person save(@RequestBody Person person, BindingResult bindingResult) {
+    
         if (bindingResult.hasErrors()) {
             throw new ValidationException();
         }
         if(personRepository.findByUsername(person.getUsername()) != null){
         logger.info("error user exist " + person);
+        
         }
+       
         var user = new Person(person.getUsername(),person.getPassword(),person.getEmail(),"ROLE_USER");
         // save note instance to db
         this.personRepository.save(user);
 
         return user;
+    
+
+        
     }
 
-    @RequestMapping(value = "/allquestions" , method = RequestMethod.GET)
-    public List<Questions> allQuestions() {
-        var question = this.questionRepository.findAll();
+    @RequestMapping(value = "/firstQuestionsList" , method = RequestMethod.GET)
+    public List<FirstQuestions> allFirstQuestions() {
+        var question = this.firstQuestionRepository.findAll();
         return question;
     }
 
-    @PostMapping("/questions")
-    public Questions saveQuestion(@RequestBody Questions question, BindingResult bindingResult) {
+    @PostMapping("/firstQuestions")
+    public FirstQuestions saveFirstQuestion(@RequestBody FirstQuestions question, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException();
         }
-
-        var _question = new Questions(question.getQuestion());
+        
+        var _question = new FirstQuestions(question.getQuestion());
         // save note instance to db
-        this.questionRepository.save(_question);
+        this.firstQuestionRepository.save(_question);
+
+        return _question;
+    }
+
+    @RequestMapping(value = "/secondQuestionsList" , method = RequestMethod.GET)
+    public List<SecondQuestions> allSecondQuestions() {
+        var question = this.secondQuestionRepository.findAll();
+        return question;
+    }
+
+    @PostMapping("/secondQuestions")
+    public SecondQuestions saveSecondQuestion(@RequestBody SecondQuestions question, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException();
+        }
+        
+        var _question = new SecondQuestions(question.getQuestion(),question.getMin(),question.getMax());
+        // save note instance to db
+        this.secondQuestionRepository.save(_question);
 
         return _question;
     }

@@ -2,24 +2,24 @@ package com.example.java_app.api.model;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "Questions")
-public class Questions {
+@Table(name = "FirstQuestions")
+public class FirstQuestions {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String question;
+    public FirstQuestions(){}
 
-    public Questions(){}
-
-    public Questions(String question)
+    public FirstQuestions(String question)
     {
         this.question = question;
-      
+        
     }
 
-    public Questions(int id,String question)
+    public FirstQuestions(int id,String question)
     {
         this(question);
     }
@@ -27,6 +27,7 @@ public class Questions {
     public int getId() { return id;}
 
     public String getQuestion() { return question;}
+
 
     public void setId(int id)
     {
@@ -37,4 +38,5 @@ public class Questions {
     {
         this.question = question;
     }
+
 }
